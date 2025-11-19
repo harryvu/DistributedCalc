@@ -96,10 +96,20 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Create deployment package
+      - name: Build and prepare deployment
         run: |
           cd Multiplying
-          zip -r ../multiplying-deployment.zip . -x "*.git*" -x "bin/*" -x "obj/*"
+          dotnet publish --configuration Release --output ./publish
+          
+          # Create .azurefunctions directory (required by Azure)
+          mkdir -p ./publish/.azurefunctions
+          
+          # Create metadata file
+          echo '{"GeneratedBy":"Microsoft.NET.Sdk.Functions","GeneratedOn":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > ./publish/.azurefunctions/metadata.json
+          
+          # Zip the publish folder
+          cd publish
+          zip -r ../../multiplying-deployment.zip .
 
       - name: Azure Login
         uses: azure/login@v2
@@ -111,8 +121,7 @@ jobs:
           az functionapp deployment source config-zip \
             --resource-group rg-dcalc \
             --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }} \
-            --src multiplying-deployment.zip \
-            --build-remote true
+            --src multiplying-deployment.zip
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
