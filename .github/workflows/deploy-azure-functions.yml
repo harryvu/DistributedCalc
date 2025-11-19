@@ -31,11 +31,12 @@ jobs:
           npm install
 
       - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_ADDING }}
           package: Adding
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_ADDING }}
+          scm-do-build-during-deployment: false
 
   deploy-subtracting-service:
     name: Deploy Subtracting Service (Python)
@@ -56,11 +57,12 @@ jobs:
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
       - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_SUBTRACTING }}
           package: Subtracting
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_SUBTRACTING }}
+          scm-do-build-during-deployment: true
 
   deploy-multiplying-service:
     name: Deploy Multiplying Service (C#)
@@ -80,11 +82,12 @@ jobs:
           dotnet build --configuration Release --output ./output
 
       - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }}
           package: Multiplying/output
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_MULTIPLYING }}
+          scm-do-build-during-deployment: false
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
@@ -105,8 +108,9 @@ jobs:
           GOOS=linux GOARCH=amd64 go build -o handler handler.go
 
       - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_DIVIDING }}
           package: Dividing
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DIVIDING }}
+          scm-do-build-during-deployment: false
