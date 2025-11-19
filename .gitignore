@@ -1,0 +1,60 @@
+# Azure Functions
+bin/
+obj/
+.vscode/
+local.settings.json
+__pycache__/
+*.pyc
+.python_packages/
+.funcignore
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Python
+*.py[cod]
+__pycache__/
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# C#
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.user
+*.userosscache
+*.sln.docstates
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.sum
+vendor/
+handler
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
