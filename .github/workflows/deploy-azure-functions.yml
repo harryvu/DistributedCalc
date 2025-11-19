@@ -30,14 +30,17 @@ jobs:
           cd Adding
           npm install
 
+      - name: Create deployment package
+        run: |
+          cd Adding
+          zip -r ../adding-deployment.zip .
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_ADDING }}
-          package: Adding
+          package: adding-deployment.zip
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_ADDING }}
-          respect-pom-xml: false
-          respect-funcignore: true
 
   deploy-subtracting-service:
     name: Deploy Subtracting Service (Python)
@@ -57,14 +60,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
+      - name: Create deployment package
+        run: |
+          cd Subtracting
+          zip -r ../subtracting-deployment.zip .
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_SUBTRACTING }}
-          package: Subtracting
+          package: subtracting-deployment.zip
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_SUBTRACTING }}
-          respect-pom-xml: false
-          respect-funcignore: true
 
   deploy-multiplying-service:
     name: Deploy Multiplying Service (C#)
@@ -83,14 +89,17 @@ jobs:
           cd Multiplying
           dotnet build --configuration Release --output ./output
 
+      - name: Create deployment package
+        run: |
+          cd Multiplying/output
+          zip -r ../../multiplying-deployment.zip .
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }}
-          package: Multiplying/output
+          package: multiplying-deployment.zip
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_MULTIPLYING }}
-          respect-pom-xml: false
-          respect-funcignore: true
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
@@ -110,11 +119,14 @@ jobs:
           go mod download
           GOOS=linux GOARCH=amd64 go build -o handler handler.go
 
+      - name: Create deployment package
+        run: |
+          cd Dividing
+          zip -r ../dividing-deployment.zip .
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1.5.2
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_DIVIDING }}
-          package: Dividing
+          package: dividing-deployment.zip
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DIVIDING }}
-          respect-pom-xml: false
-          respect-funcignore: true
