@@ -96,14 +96,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Build project
+      - name: Build and publish project
         run: |
           cd Multiplying
-          dotnet build --configuration Release --output ./output
+          dotnet publish --configuration Release --output ./publish
 
       - name: Create deployment package
         run: |
-          cd Multiplying/output
+          cd Multiplying/publish
           zip -r ../../multiplying-deployment.zip .
 
       - name: Azure Login
