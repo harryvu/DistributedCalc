@@ -96,15 +96,10 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Build and publish project
-        run: |
-          cd Multiplying
-          dotnet publish --configuration Release --output ./publish
-
       - name: Create deployment package
         run: |
-          cd Multiplying/publish
-          zip -r ../../multiplying-deployment.zip .
+          cd Multiplying
+          zip -r ../multiplying-deployment.zip . -x "*.git*" -x "bin/*" -x "obj/*"
 
       - name: Azure Login
         uses: azure/login@v2
@@ -116,7 +111,8 @@ jobs:
           az functionapp deployment source config-zip \
             --resource-group rg-dcalc \
             --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }} \
-            --src multiplying-deployment.zip
+            --src multiplying-deployment.zip \
+            --build-remote true
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
