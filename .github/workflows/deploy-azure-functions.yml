@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
@@ -35,12 +36,17 @@ jobs:
           cd Adding
           zip -r ../adding-deployment.zip .
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.2
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_ADDING }}
-          package: adding-deployment.zip
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_ADDING }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Functions
+        run: |
+          az functionapp deployment source config-zip \
+            --resource-group rg-dcalc \
+            --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_ADDING }} \
+            --src adding-deployment.zip
 
   deploy-subtracting-service:
     name: Deploy Subtracting Service (Python)
@@ -65,12 +71,18 @@ jobs:
           cd Subtracting
           zip -r ../subtracting-deployment.zip .
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.2
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_SUBTRACTING }}
-          package: subtracting-deployment.zip
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_SUBTRACTING }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Functions
+        run: |
+          az functionapp deployment source config-zip \
+            --resource-group rg-dcalc \
+            --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_SUBTRACTING }} \
+            --src subtracting-deployment.zip \
+            --build-remote true
 
   deploy-multiplying-service:
     name: Deploy Multiplying Service (C#)
@@ -94,12 +106,17 @@ jobs:
           cd Multiplying/output
           zip -r ../../multiplying-deployment.zip .
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.2
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }}
-          package: multiplying-deployment.zip
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_MULTIPLYING }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Functions
+        run: |
+          az functionapp deployment source config-zip \
+            --resource-group rg-dcalc \
+            --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }} \
+            --src multiplying-deployment.zip
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
@@ -124,9 +141,14 @@ jobs:
           cd Dividing
           zip -r ../dividing-deployment.zip .
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.2
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_DIVIDING }}
-          package: dividing-deployment.zip
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DIVIDING }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Functions
+        run: |
+          az functionapp deployment source config-zip \
+            --resource-group rg-dcalc \
+            --name ${{ secrets.AZURE_FUNCTIONAPP_NAME_DIVIDING }} \
+            --src dividing-deployment.zip
