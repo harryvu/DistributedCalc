@@ -1,0 +1,14 @@
+{
+  "name": "adding-service",
+  "version": "1.0.0",
+  "description": "Azure Function for adding numbers",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "@azure/functions": "^3.0.0"
+  },
+  "devDependencies": {}
+}
