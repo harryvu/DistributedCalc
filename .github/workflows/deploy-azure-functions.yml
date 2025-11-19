@@ -36,7 +36,8 @@ jobs:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_ADDING }}
           package: Adding
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_ADDING }}
-          scm-do-build-during-deployment: false
+          respect-pom-xml: false
+          respect-funcignore: true
 
   deploy-subtracting-service:
     name: Deploy Subtracting Service (Python)
@@ -62,7 +63,8 @@ jobs:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_SUBTRACTING }}
           package: Subtracting
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_SUBTRACTING }}
-          scm-do-build-during-deployment: true
+          respect-pom-xml: false
+          respect-funcignore: true
 
   deploy-multiplying-service:
     name: Deploy Multiplying Service (C#)
@@ -87,7 +89,8 @@ jobs:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_MULTIPLYING }}
           package: Multiplying/output
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_MULTIPLYING }}
-          scm-do-build-during-deployment: false
+          respect-pom-xml: false
+          respect-funcignore: true
 
   deploy-dividing-service:
     name: Deploy Dividing Service (Go)
@@ -113,4 +116,5 @@ jobs:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME_DIVIDING }}
           package: Dividing
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DIVIDING }}
-          scm-do-build-during-deployment: false
+          respect-pom-xml: false
+          respect-funcignore: true
