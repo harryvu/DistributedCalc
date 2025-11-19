@@ -113,7 +113,33 @@ func start
 
 ## Deployment to Azure
 
-Each microservice can be deployed independently to Azure Functions:
+### Automated Deployment with GitHub Actions
+
+This project includes a GitHub Actions workflow (`.github/workflows/deploy-azure-functions.yml`) that automatically deploys all four microservices to Azure Functions when changes are pushed to the `main` branch.
+
+#### Setup Instructions
+
+1. **Create Azure Function Apps**: Create four separate Azure Function Apps in your Azure subscription (one for each microservice). Make sure to set the authentication level to **Anonymous** for public access.
+
+2. **Get Publish Profiles**: For each Function App, download the publish profile from the Azure Portal:
+   - Go to your Function App → Get publish profile
+   - Save the XML content
+
+3. **Configure GitHub Secrets**: Add the following secrets to your GitHub repository (Settings → Secrets and variables → Actions):
+   - `AZURE_FUNCTIONAPP_NAME_ADDING` - Name of your Adding service Function App
+   - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_ADDING` - Publish profile XML for Adding service
+   - `AZURE_FUNCTIONAPP_NAME_SUBTRACTING` - Name of your Subtracting service Function App
+   - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_SUBTRACTING` - Publish profile XML for Subtracting service
+   - `AZURE_FUNCTIONAPP_NAME_MULTIPLYING` - Name of your Multiplying service Function App
+   - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_MULTIPLYING` - Publish profile XML for Multiplying service
+   - `AZURE_FUNCTIONAPP_NAME_DIVIDING` - Name of your Dividing service Function App
+   - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DIVIDING` - Publish profile XML for Dividing service
+
+4. **Deploy**: Push to the `main` branch or manually trigger the workflow from the Actions tab to deploy all services.
+
+### Manual Deployment
+
+Each microservice can also be deployed independently using Azure Functions Core Tools:
 
 ```bash
 # Deploy from each service directory
@@ -131,6 +157,9 @@ All services include proper error handling for:
 
 ```
 DistributedCalc/
+├── .github/
+│   └── workflows/
+│       └── deploy-azure-functions.yml  # GitHub Actions deployment workflow
 ├── Adding/                 # JavaScript/Node.js service
 │   ├── add/
 │   │   ├── function.json
